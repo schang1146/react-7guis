@@ -6,7 +6,7 @@ function Counter() {
   return (
     <div>
       <h2>Counter</h2>
-      <input value={counter} />
+      <input readOnly value={counter} />
       <button
         onClick={() => {
           setCounter(counter + 1);

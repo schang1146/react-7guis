@@ -99,7 +99,7 @@ function FlightBooker() {
       <br />
       <input value={arrival} className={`${isValidArrival(arrival, departure) ? '' : styles.invalid}`} onChange={(e) => setArrival(e.target.value)} disabled={flightType === 'oneWay' ? true : false} />
       <br />
-      <button onClick={handlerBookFlight} disabled={!isValidDate(departure, 'departure') || !isValidDate(arrival, 'arrival', departure) ? true : false}>
+      <button onClick={handlerBookFlight} disabled={!isValidDeparture(departure) || !isValidArrival(arrival, departure) ? true : false}>
         Book
       </button>
     </div>

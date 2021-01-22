@@ -1,0 +1,11 @@
+.canvas {
+    border: 1px solid black;
+}
+
+.modal {
+    border: 1px solid black;
+}
+
+.hidden {
+    display: none;
+}

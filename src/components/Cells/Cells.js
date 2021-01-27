@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
+import { evaluate } from 'mathjs';
 
 function TableHeader({ width }) {
   let header = [<th>{/* Empty for top left corner */}</th>];
@@ -37,7 +38,36 @@ function Cells() {
 
   const parseCell = (data) => {
     if (data[0] === '=') {
-      return '';
+      let output = '';
+      let cp = 1;
+      while (cp < data.length) {
+        if (data[cp].match(/[a-zA-Z]/)) {
+          let colRef, rowRef;
+          colRef = data[cp].charCodeAt(0) - 65;
+          if (cp + 1 < data.length && data[cp + 1].match(/[0-9]/)) {
+            if (cp + 2 < data.length && data[cp + 2].match(/[0-9]/)) {
+              rowRef = data[cp + 1] + data[cp + 2];
+              cp += 2;
+            } else {
+              rowRef = data[cp + 1];
+              cp++;
+            }
+          } else {
+            console.log('Invalid expression!');
+          }
+          console.log(rowRef, colRef);
+          if (rowRef !== undefined && colRef !== undefined) {
+            output += tableState[rowRef][colRef];
+          } else {
+            return '';
+          }
+        } else if (data[cp].match(/[0-9-+/*()]/)) {
+          output += data[cp];
+        }
+        cp++;
+      }
+      console.log(output);
+      return evaluate(output);
     } else {
       return data;
     }
@@ -65,11 +95,11 @@ function Cells() {
                     <td key={`${rowId},${colId}`}>
                       <input
                         id={`${rowId},${colId}`}
-                        value={activeElement === document.activeElement ? data : parseCell(data)}
+                        value={activeElement === `${rowId},${colId}` ? data : parseCell(data)}
                         onChange={(e) => handleTextChange(e)}
                         onBlur={(e) => setCell(e)}
                         onFocus={(e) => {
-                          setActiveElement(e.target);
+                          setActiveElement(e.target.id);
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {

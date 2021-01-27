@@ -10,6 +10,7 @@ function TableHeader({ width }) {
 }
 
 function Cells() {
+  const [activeElement, setActiveElement] = useState(null);
   const [tableWidth, setTableWidth] = useState(3);
   const [tableHeight, setTableHeight] = useState(10);
 
@@ -35,10 +36,15 @@ function Cells() {
   };
 
   const parseCell = (data) => {
-    return data;
+    if (data[0] === '=') {
+      return '';
+    } else {
+      return data;
+    }
   };
 
   const setCell = (e) => {
+    setActiveElement(null);
     console.log(e.target.value);
   };
 
@@ -59,9 +65,12 @@ function Cells() {
                     <td key={`${rowId},${colId}`}>
                       <input
                         id={`${rowId},${colId}`}
-                        value={parseCell(data)}
+                        value={activeElement === document.activeElement ? data : parseCell(data)}
                         onChange={(e) => handleTextChange(e)}
                         onBlur={(e) => setCell(e)}
+                        onFocus={(e) => {
+                          setActiveElement(e.target);
+                        }}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.target.blur();

@@ -4,6 +4,7 @@ import FlightBooker from '../FlightBooker/FlightBooker';
 import Timer from '../Timer/Timer';
 import Crud from '../Crud/Crud';
 import CircleDrawer from '../CircleDrawer/CircleDrawer';
+import Cells from '../Cells/Cells';
 import './App.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Timer />
       <Crud />
       <CircleDrawer />
+      <Cells />
     </div>
   );
 }
